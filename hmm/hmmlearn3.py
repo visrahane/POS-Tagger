@@ -19,6 +19,10 @@ def readFile(fileName):
 def saveToFile():
     f = open("hmmmodel.txt", "a");
     f.write(json.dumps(stateDiagram));
+    f.write("\n");
+    f.write(json.dumps(wordTagMap))
+    f.write("\n");
+    f.write(json.dumps(initCountOfTagMap));
     f.close()
 
 def calculateTransProbability():
@@ -42,7 +46,7 @@ def calculateInitialProbability():
 
 def constructMaps(inputFileObj):
     for line in inputFileObj:
-        words=(line.split(" "));
+        words=(line.rstrip().split(" "));
         prev=""; # to keep track of prev node
         for word in words:
             tagWordArray=word.split("/");
