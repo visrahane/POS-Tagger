@@ -17,7 +17,7 @@ def readFile(fileName):
         print(line.split(" ")); """
 
 def saveToFile():
-    f = open("hmmmodel.txt", "a");
+    f = open("hmmmodel.txt", "w");
     f.write(json.dumps(stateDiagram));
     f.write("\n");
     f.write(json.dumps(wordTagMap))
