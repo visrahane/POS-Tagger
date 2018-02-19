@@ -1,7 +1,7 @@
 import sys;
 from collections import defaultdict;
 import json;
-import numpy as np;
+
 
 stateDiagram=defaultdict(dict);
 wordTagMap=defaultdict(dict);
@@ -27,17 +27,36 @@ def saveToFile():
 
 def calculateTransProbability():
     #iterate over stateDiagram and update edges to have transition prob
+    """
     for vertex1,vertices in stateDiagram.items():
-        totalCount=sum(vertices.values());
+        totalEdgeCount=sum(vertices.values());
         for vertex2,edgeCount in vertices.items():
-            edgeCount=edgeCount/totalCount;
+            edgeCount=(edgeCount)/totalEdgeCount;
             vertices[vertex2]=edgeCount;
 
+    """
+    for key1 in stateDiagram:
+        totalEdgeCount = sum(stateDiagram[key1].values());
+        for key2 in stateDiagram:
+            if(stateDiagram[key1].__contains__(key2)):
+                stateDiagram[key1][key2]= ((stateDiagram[key1][key2] + 1) / (totalEdgeCount+len(stateDiagram)));
+            else:
+                stateDiagram[key1][key2]=1/(totalEdgeCount+len(stateDiagram));
+
 def calculateEmissionProbability():
+    """
     for word,innerTagMap in wordTagMap.items():
         for tag,tagCnt in innerTagMap.items():
             tagCnt=tagCnt/tagMap[tag];
             innerTagMap[tag]=tagCnt;
+    """
+    for word, innerTagMap in wordTagMap.items():
+        for tag, tagCnt in innerTagMap.items():
+            tagCnt = (tagCnt+1) / (tagMap[tag]+len(wordTagMap));
+            innerTagMap[tag] = tagCnt;
+
+    for tag in stateDiagram:
+        wordTagMap["unknown"][tag]=1/(tagMap[tag]+len(wordTagMap));
 
 def calculateInitialProbability():
     totalCount=sum(initCountOfTagMap.values());

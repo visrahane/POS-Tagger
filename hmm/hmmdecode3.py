@@ -51,8 +51,8 @@ def runViterbi(obs):
     max,maxState=getFinalMax(len(obs)-1,viterbi);
     viterbi["qf"][len(obs)-1]=max;
     backpointer["qf"][len(obs)-1]=maxState;
-    print("viterbi-", viterbi);
-    print("backPtr-", backpointer);
+    #print("viterbi-", viterbi);
+    #print("backPtr-", backpointer);
     return backpointer;
 
 
@@ -70,7 +70,7 @@ def getMax(currentState,obsIndex,viterbi,obs):
     max=float("-inf");
     maxState=0;
     for state in stateDiagram:
-        currentValue=viterbi[state][obsIndex-1]*wordTagMap.get(obs[obsIndex]).get(currentState, 0)*stateDiagram[state].get(currentState,0);
+        currentValue=viterbi[state][obsIndex-1]*wordTagMap.get(obs[obsIndex],wordTagMap.get("unknown")).get(currentState, 0)*stateDiagram[state].get(currentState,0);
         if(max<currentValue):
             max=currentValue;
             maxState=state;
@@ -85,7 +85,7 @@ def initForViterbi(obs):
         newList = [0] * t;
         viterbi[state] = myList;
         backpointer[state] = newList;
-        viterbi[state][0] = initProbOfTag.get(state, 0) * wordTagMap[obs[0]].get(state, 0);
+        viterbi[state][0] = initProbOfTag.get(state, 0) * wordTagMap.get(obs[0],wordTagMap.get("unknown")).get(state, 0);
         backpointer[state][0] = 0;
     myList = [0] * t;
     newList = [0] * t;
