@@ -22,8 +22,8 @@ def tagData(inputFileObj):
     outputFileObj=open('hmmoutput.txt', 'w');
     for line in inputFileObj:
         obs=line.rstrip().split(" ");
-        for i in range(len(obs)):
-            obs[i]=obs[i].lower();
+        #for i in range(len(obs)):
+        #    obs[i]=obs[i].lower();
         backpointer=runViterbi(obs);
         state=backpointer["qf"][obs.__len__()-1];
         for t in range(obs.__len__()-1,-1,-1):

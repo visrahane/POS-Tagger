@@ -69,7 +69,9 @@ def constructMaps(inputFileObj):
         prev=""; # to keep track of prev node
         for word in words:
             tagWordArray=word.split("/");
-            tagWordArray[0]=tagWordArray[0].lower();
+            #if slash in words
+            tagWordArray[0:-1]= ["/".join(tagWordArray[0:-1])];
+            #tagWordArray[0]= tagWordArray[0].lower();
             tagMap[tagWordArray[1]]+=1;
             if ( (tagWordArray[1]) not in stateDiagram):
                 #add the entry for tag
