@@ -19,7 +19,7 @@ def readProbFromFile():
     return stateDiagram,wordTagMap,initProbOfTag;
 
 def tagData(inputFileObj):
-    outputFileObj=open('hmmoutput.txt', 'w');
+    outputFileObj=open('hmmoutput.txt', 'w',encoding="utf8");
     for line in inputFileObj:
         obs=line.rstrip().split(" ");
         #for i in range(len(obs)):
@@ -85,7 +85,7 @@ def initForViterbi(obs):
         newList = [0] * t;
         viterbi[state] = myList;
         backpointer[state] = newList;
-        viterbi[state][0] = initProbOfTag.get(state, 0) * wordTagMap.get(obs[0],wordTagMap.get("unknown")).get(state, 0);
+        viterbi[state][0] = initProbOfTag.get(state, initProbOfTag["unknown"]) * wordTagMap.get(obs[0],wordTagMap.get("unknown")).get(state, 0);
         backpointer[state][0] = 0;
     myList = [0] * t;
     newList = [0] * t;

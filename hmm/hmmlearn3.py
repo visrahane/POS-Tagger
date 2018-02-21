@@ -61,7 +61,8 @@ def calculateEmissionProbability():
 def calculateInitialProbability():
     totalCount=sum(initCountOfTagMap.values());
     for node in initCountOfTagMap:
-        initCountOfTagMap[node]=initCountOfTagMap[node]/totalCount;
+        initCountOfTagMap[node]=(initCountOfTagMap[node]+1)/(totalCount+len(stateDiagram));
+    initCountOfTagMap["unknown"]=1/(totalCount+len(stateDiagram));
 
 def constructMaps(inputFileObj):
     for line in inputFileObj:
