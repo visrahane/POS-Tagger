@@ -85,7 +85,7 @@ def initForViterbi(obs):
         newList = [0] * t;
         viterbi[state] = myList;
         backpointer[state] = newList;
-        viterbi[state][0] = initProbOfTag.get(state, initProbOfTag["unknown"]) * wordTagMap.get(obs[0],wordTagMap.get("unknown")).get(state, 0);
+        viterbi[state][0] = initProbOfTag.get(state) * wordTagMap.get(obs[0],wordTagMap.get("unknown")).get(state, 0);
         backpointer[state][0] = 0;
     myList = [0] * t;
     newList = [0] * t;
