@@ -39,9 +39,9 @@ def calculateTransProbability():
         totalEdgeCount = sum(stateDiagram[key1].values());
         for key2 in stateDiagram:
             if(stateDiagram[key1].__contains__(key2)):
-                stateDiagram[key1][key2]= ((stateDiagram[key1][key2] + 1) / (totalEdgeCount+len(stateDiagram)));
+                stateDiagram[key1][key2]= ((stateDiagram[key1][key2] + 0.5) / (totalEdgeCount+len(stateDiagram)/2));
             else:
-                stateDiagram[key1][key2]=1/(totalEdgeCount+len(stateDiagram));
+                stateDiagram[key1][key2]=0.5/(totalEdgeCount+len(stateDiagram)/2);
 
 def calculateEmissionProbability():
     """
@@ -56,13 +56,21 @@ def calculateEmissionProbability():
             innerTagMap[tag] = tagCnt;
 
     for tag in stateDiagram:
-        wordTagMap["unknown"][tag]=1/(tagMap[tag]+len(wordTagMap));
+        wordTagMap["unknown"][tag]=(tagMap[tag]/sum(tagMap.values()));
 
 def calculateInitialProbability():
     totalCount=sum(initCountOfTagMap.values());
+    totalKnownTags=len(initCountOfTagMap);
+    totalKnowTagCnt=0;
     for node in initCountOfTagMap:
-        initCountOfTagMap[node]=(initCountOfTagMap[node]+1)/(totalCount+len(stateDiagram));
-    initCountOfTagMap["unknown"]=1/(totalCount+len(stateDiagram));
+        initCountOfTagMap[node]=(initCountOfTagMap[node]+0.5)/(totalCount+len(stateDiagram)/2);
+        totalKnowTagCnt+=tagMap[node];
+
+    totalUnknowTagCnt=sum(tagMap.values())-totalKnowTagCnt;
+    #print("shit",totalUnknowTagCnt);
+    for node in stateDiagram:
+        if(node not in initCountOfTagMap):
+            initCountOfTagMap[node]=(tagMap[node]/totalUnknowTagCnt * (len(stateDiagram)-totalKnownTags)/2)/(totalCount+len(stateDiagram)/2);
 
 def constructMaps(inputFileObj):
     for line in inputFileObj:
@@ -72,7 +80,7 @@ def constructMaps(inputFileObj):
             tagWordArray=word.split("/");
             #if slash in words
             tagWordArray[0:-1]= ["/".join(tagWordArray[0:-1])];
-            #tagWordArray[0]= tagWordArray[0].lower();
+            tagWordArray[0]= tagWordArray[0].lower();
             tagMap[tagWordArray[1]]+=1;
             if ( (tagWordArray[1]) not in stateDiagram):
                 #add the entry for tag
@@ -119,6 +127,7 @@ calculateEmissionProbability();
 calculateInitialProbability();
 print("probWordTagMap-", wordTagMap);
 print("initCountOfTagMap-",initCountOfTagMap);
-#print("tagMap-", tagMap);
+
+print("tagMap-", tagMap);
 saveToFile();
 
