@@ -21,15 +21,16 @@ def readProbFromFile():
 def tagData(inputFileObj):
     outputFileObj=open('hmmoutput.txt', 'w',encoding="utf8");
     for line in inputFileObj:
-        obs=line.rstrip().split(" ");
-        #for i in range(len(obs)):
-        #    obs[i]=obs[i].lower();
+        realObs=line.rstrip().split(" ");
+        obs=list(realObs);
+        for i in range(len(obs)):
+            obs[i]=obs[i].lower();
         backpointer=runViterbi(obs);
         state=backpointer["qf"][obs.__len__()-1];
         for t in range(obs.__len__()-1,-1,-1):
-            obs[t] += '/' + state;
+            realObs[t] += '/' + state;
             state=backpointer[state][t];
-        print(" ".join(obs),file=outputFileObj);
+        print(" ".join(realObs),file=outputFileObj);
     outputFileObj.close();
 
 def writeToFile():
