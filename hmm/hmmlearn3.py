@@ -52,7 +52,7 @@ def calculateEmissionProbability():
     """
     for word, innerTagMap in wordTagMap.items():
         for tag, tagCnt in innerTagMap.items():
-            tagCnt = (tagCnt+1) / (tagMap[tag]+len(wordTagMap));
+            tagCnt = tagCnt/tagMap[tag];
             innerTagMap[tag] = tagCnt;
 
     for tag in stateDiagram:
