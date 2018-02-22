@@ -56,7 +56,7 @@ def calculateEmissionProbability():
             innerTagMap[tag] = tagCnt;
 
     for tag in stateDiagram:
-        wordTagMap["unknown"][tag]=1/(tagMap[tag]+len(wordTagMap));
+        wordTagMap["unknown"][tag]=(tagMap[tag]/sum(tagMap.values()));
 
 def calculateInitialProbability():
     totalCount=sum(initCountOfTagMap.values());
@@ -119,6 +119,7 @@ calculateEmissionProbability();
 calculateInitialProbability();
 print("probWordTagMap-", wordTagMap);
 print("initCountOfTagMap-",initCountOfTagMap);
-#print("tagMap-", tagMap);
+
+print("tagMap-", tagMap);
 saveToFile();
 
